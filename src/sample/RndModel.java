@@ -14,7 +14,7 @@ public class RndModel {
     private HashMap<String, Double> map = new HashMap<>();
 
     // Добавить новое случаное значение
-    private boolean genNewItem() {
+    public boolean addItem() {
         boolean successGenKey = false; // Успешна ли генерация ключа
         int limit = 100; // Количество попыток генерации ключа
 
@@ -52,7 +52,8 @@ public class RndModel {
         return true;
     }
 
-    private void removeItem() {
+    // УДалить случайное значение
+    public void removeItem() {
         if (!map.isEmpty()) {
             Iterator<Map.Entry<String, Double>> it = map.entrySet().iterator();
             int index = rnd.nextInt(0, map.size());
@@ -69,45 +70,11 @@ public class RndModel {
         }
     }
 
-    // --------------------------------
-
-    public synchronized HashMap<String, Double> getMap() {
+    public HashMap<String, Double> getMap() {
         return map;
     }
 
-    // Добавить N чисел
-    public synchronized int addItems(int count) {
-        int createdItems = 0;
-
-        for (int i = 0; i < count; i++) {
-            if (genNewItem())
-                createdItems++;
-        }
-
-        return createdItems;
-    }
-
-    // Удалить N чисел
-    public synchronized void removeItems(int count) {
-
-        // Если число N больше или равно количеству значений
-        if (map.size() <= count) {
-            map.clear();
-            return;
-        }
-
-        for (int i = 0; i < count; i++) {
-            removeItem();
-        }
-    }
-
-    public synchronized List<String> listOfItems() {
-        ArrayList<String> ret = new ArrayList<>();
-
-        for (Map.Entry<String, Double> e : map.entrySet()) {
-            ret.add(String.format("%s -> %g", e.getKey(), e.getValue()));
-        }
-
-        return ret;
+    public void saveToFile() {
+        System.out.println("SAVED");
     }
 }
