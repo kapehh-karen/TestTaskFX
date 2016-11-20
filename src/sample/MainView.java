@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -30,6 +27,7 @@ public class MainView extends Application {
     private Button btnAdd;
     private Button btnRemove;
     private Label labelTime;
+    private ProgressBar progressBar;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -39,23 +37,26 @@ public class MainView extends Application {
         btnAdd = (Button) root.lookup("#btn_add");
         btnRemove = (Button) root.lookup("#btn_remove");
         labelTime = (Label) root.lookup("#lbl_time");
+        progressBar = (ProgressBar) root.lookup("#progress_bar");
 
         btnAdd.setOnAction(event -> {
             try {
-                controller.addItems(Integer.valueOf(textField.getText()));
+                controller.addItems(Integer.valueOf(textField.getText()), () -> {
+                    listView.setItems(FXCollections.observableArrayList(controller.getListOfItems()));
+                }, progressBar);
             } catch (NumberFormatException e) {
                 // NumberFormatException
             }
-            listView.setItems(FXCollections.observableArrayList(controller.getListOfItems()));
         });
 
         btnRemove.setOnAction(event -> {
             try {
-                controller.removeItems(Integer.valueOf(textField.getText()));
+                controller.removeItems(Integer.valueOf(textField.getText()), () -> {
+                    listView.setItems(FXCollections.observableArrayList(controller.getListOfItems()));
+                }, progressBar);
             } catch (NumberFormatException e) {
                 // NumberFormatException
             }
-            listView.setItems(FXCollections.observableArrayList(controller.getListOfItems()));
         });
 
         primaryStage.setTitle("Задание \"ЛАНИТ\"");

@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.*;
 import java.util.*;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -8,6 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by karen on 17.11.2016.
  */
 public class RndModel {
+    public interface ProgressSave {
+        void updateProgress(double progress);
+    }
+
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private ThreadLocalRandom rnd = ThreadLocalRandom.current();
@@ -74,7 +79,32 @@ public class RndModel {
         return map;
     }
 
-    public void saveToFile() {
-        System.out.println("SAVED");
+    public void saveToFile(ProgressSave progressSave) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(map);
+        oos.close();
+
+        FileOutputStream fos = new FileOutputStream(new File("data.db"));
+        try {
+            byte[] bytesToSave = baos.toByteArray();
+            int chunkSize = map.size() > 0 ? bytesToSave.length / map.size() : bytesToSave.length;
+            int offset = 0;
+            while (offset < bytesToSave.length) {
+                int len = Math.min(chunkSize, bytesToSave.length - offset);
+                fos.write(bytesToSave, offset, len);
+                offset += chunkSize;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+
+                }
+                double progress = Math.min(offset * 100 / bytesToSave.length, 100) / 100.0;
+                progressSave.updateProgress(progress);
+            }
+        } catch (Throwable e){
+            e.printStackTrace();
+        }
+        fos.close();
     }
 }

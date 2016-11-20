@@ -11,17 +11,19 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ProgressBar?>
 <AnchorPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
-    <AnchorPane AnchorPane.bottomAnchor="100" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+    <AnchorPane AnchorPane.bottomAnchor="120" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
         <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
             <Label id="lbl_time">--:--</Label>
-            <ListView id="list_of_nums"></ListView>
+            <ListView id="list_of_nums" prefHeight="1024"></ListView>
         </VBox>
     </AnchorPane>
     <AnchorPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
         <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
             <Label>Количество (N):</Label>
             <TextField id="txt_n">5</TextField>
+            <ProgressBar id="progress_bar" maxWidth="Infinity" progress="1"></ProgressBar>
             <HBox spacing="10">
                 <Button id="btn_add">Добавить</Button>
                 <Button id="btn_remove">Удалить</Button>
